@@ -36,7 +36,7 @@ ARG CACHEBUST=1
 COPY ./config* ./
 COPY ./R-50.pth .
 COPY ./run* ./
-COPY ./maskrcnn_benchmark .
+COPY ./maskrcnn_benchmark ./maskrcnn_benchmark
 COPY ./setup.py .
 COPY ./tools .
 
