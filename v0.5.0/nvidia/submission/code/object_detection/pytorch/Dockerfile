@@ -34,7 +34,7 @@ WORKDIR /workspace/object_detection
 ARG CACHEBUST=1
 
 COPY ./config* ./
-COPY ./R-50.path .
+COPY ./R-50.pth .
 COPY ./run* ./
 COPY ./maskrcnn_benchmark .
 COPY ./setup.py .
