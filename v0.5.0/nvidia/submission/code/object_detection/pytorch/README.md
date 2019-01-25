@@ -47,7 +47,11 @@ Steps required to launch single node training on NVIDIA DGX-1:
 ```
 docker build . -t mlperf-nvidia:object_detection --build-arg CACHEBUST=$(date +%s)
 DATADIR=<path/to/data/dir> LOGDIR=<path/to/output/dir> DGXSYSTEM=DGX1 ./run.sub
+
+DATADIR=/home/ubuntu/mlperf/v0.5.0/nvidia/submission/code/object_detection/pytorch/detectron/lib/datasets/data/coco/ LOGDIR=/home/ubuntu/log_dir DGXSYSTEM=DGX1 ./run.sub
 ```
+
+nvidia-docker run -it --entrypoint /bin/bash mlperf-nvidia:object_detection
 
 ### NVIDIA DGX-2 (single node)
 Launch configuration and system-specific hyperparameters for the NVIDIA DGX-2
