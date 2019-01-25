@@ -33,12 +33,13 @@ COPY ./detectron/lib/datasets/data/coco /coco
 WORKDIR /workspace/object_detection
 ARG CACHEBUST=1
 
-COPY ./config* ./
+COPY ./config_ ./
 COPY ./R-50.pth .
 COPY ./run* ./
 COPY ./maskrcnn_benchmark ./maskrcnn_benchmark
 COPY ./setup.py .
-COPY ./tools .
+COPY ./tools ./tools
+COPY ./configs ./configs
 
 
 RUN pip install -e .
