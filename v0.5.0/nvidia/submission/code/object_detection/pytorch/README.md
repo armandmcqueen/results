@@ -17,6 +17,9 @@ To download and verify the dataset use following scripts:
 This should return `PASSED`. 
 To extract the dataset use:
 
+    mkdir -p detectron/lib/datasets/data/coco
+    sudo apt-get install dtrx
+
     wget https://raw.githubusercontent.com/mlperf/training/master/object_detection/caffe2/extract_dataset.sh
     chmod +x extract_dataset.sh
     ./extract_dataset.sh
@@ -27,6 +30,8 @@ To download and verify the RN50 weights use:
     ../download_weights.sh
 
 Then convert the pre-trained backbone from Caffe2 to PyTorch format:
+
+(Requires pytorch: `source activate pytorch_p36`)
 
     ./convert_c2_model.py
     
