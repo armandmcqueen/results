@@ -29,6 +29,7 @@ To download and verify the RN50 weights use:
 Then convert the pre-trained backbone from Caffe2 to PyTorch format:
 
     ./convert_c2_model.py
+    
 
 ## Steps to launch training
 
@@ -39,7 +40,7 @@ single node submission are in the `config_DGX1.sh` script.
 Steps required to launch single node training on NVIDIA DGX-1:
 
 ```
-docker build . -t mlperf-nvidia:object_detection
+docker build . -t mlperf-nvidia:object_detection --build-arg CACHEBUST=$(date +%s)
 DATADIR=<path/to/data/dir> LOGDIR=<path/to/output/dir> DGXSYSTEM=DGX1 ./run.sub
 ```
 

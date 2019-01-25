@@ -27,9 +27,24 @@ RUN git clone -b v0.1 https://github.com/NVIDIA/cocoapi.git \
  && cd cocoapi/PythonAPI \
  && pip install -e .
 
+COPY ./detectron/lib/datasets/data/coco /coco
+
 # Copy detectron code and build
 WORKDIR /workspace/object_detection
-COPY . .
+ARG CACHEBUST=1
+
+COPY ./config* .
+COPY ./R-50.path .
+COPY ./run* .
+COPY ./maskrcnn_benchmark .
+COPY ./setup.py .
+COPY ./tools .
+
+
 RUN pip install -e .
 
 ENV OMP_NUM_THREADS=1
+
+RUN mkdir -p /coco/models
+RUN mv /workspace/object_detection/R-50.pth /coco/models/R-50.pth
+
