@@ -12,6 +12,13 @@ SLURM_JOB_ID=${SLURM_JOB_ID:-$RANDOM}
 MULTI_NODE=${MULTI_NODE:-''}
 echo "Run vars: id $SLURM_JOB_ID gpus $SLURM_NTASKS_PER_NODE mparams $MULTI_NODE"
 
+CONFIG_YAML='configs/e2e_mask_rcnn_R_50_FPN_1x.yaml'
+
+if [ ${DGXSYSTEM} = "DGX1_b1" ]; then
+  echo "Using batch_size=1 params and YAML"
+  CONFIG_YAML='configs/e2e_mask_rcnn_R_50_FPN_1x_b1.yaml'
+fi
+
 # runs benchmark and reports time to convergence
 # to use the script:
 #   run_and_time.sh
@@ -42,7 +49,7 @@ rm -f $TMPFILE
 python -m torch.distributed.launch --nproc_per_node $SLURM_NTASKS_PER_NODE $MULTI_NODE tools/train_net.py \
   --fp16 \
   ${EXTRA_PARAMS} \
-  --config-file 'configs/e2e_mask_rcnn_R_50_FPN_1x.yaml' \
+  --config-file $CONFIG_YAML \
   "${EXTRA_CONFIG[@]}" ; ret_code=$?
 
 set +x
