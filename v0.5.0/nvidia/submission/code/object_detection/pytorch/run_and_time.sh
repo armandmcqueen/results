@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DGXSYSTEM=${DGXSYSTEM:-"DGX1"}
+USE_FP16=${USE_FP16:-"TRUE"}
 if [[ -f config_${DGXSYSTEM}.sh ]]; then
   source config_${DGXSYSTEM}.sh
 else
@@ -12,11 +13,20 @@ SLURM_JOB_ID=${SLURM_JOB_ID:-$RANDOM}
 MULTI_NODE=${MULTI_NODE:-''}
 echo "Run vars: id $SLURM_JOB_ID gpus $SLURM_NTASKS_PER_NODE mparams $MULTI_NODE"
 
-CONFIG_YAML='configs/e2e_mask_rcnn_R_50_FPN_1x.yaml'
+
 
 if [ ${DGXSYSTEM} = "DGX1_b1" ]; then
   echo "Using batch_size=1 params and YAML"
   CONFIG_YAML='configs/e2e_mask_rcnn_R_50_FPN_1x_b1.yaml'
+else
+  CONFIG_YAML='configs/e2e_mask_rcnn_R_50_FPN_1x.yaml'
+fi
+
+if [ ${USE_FP16} == "TRUE" ]; then
+  FP16_ARG="--fp16"
+else
+  echo "Not using FP16"
+  FP16_ARG=""
 fi
 
 # runs benchmark and reports time to convergence
@@ -46,8 +56,7 @@ touch $TMPFILE || exit 1
 rm -f $TMPFILE
 
 # run training
-python -m torch.distributed.launch --nproc_per_node $SLURM_NTASKS_PER_NODE $MULTI_NODE tools/train_net.py \
-  --fp16 \
+python -m torch.distributed.launch --nproc_per_node $SLURM_NTASKS_PER_NODE $MULTI_NODE tools/train_net.py ${FP16_ARG}
   ${EXTRA_PARAMS} \
   --config-file $CONFIG_YAML \
   "${EXTRA_CONFIG[@]}" ; ret_code=$?
