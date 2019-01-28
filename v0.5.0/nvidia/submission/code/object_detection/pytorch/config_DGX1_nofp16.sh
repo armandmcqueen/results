@@ -16,7 +16,7 @@ USE_FP16="FALSE"
 
 ## System run parms
 DGXNNODES=1
-DGXSYSTEM=DGX1
+DGXSYSTEM=DGX1_nofp16
 WALLTIME=12:00:00
 
 ## System config params
