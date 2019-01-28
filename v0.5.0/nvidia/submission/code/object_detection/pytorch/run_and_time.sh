@@ -56,7 +56,7 @@ touch $TMPFILE || exit 1
 rm -f $TMPFILE
 
 # run training
-python -m torch.distributed.launch --nproc_per_node $SLURM_NTASKS_PER_NODE $MULTI_NODE tools/train_net.py ${FP16_ARG}
+python -m torch.distributed.launch --nproc_per_node $SLURM_NTASKS_PER_NODE $MULTI_NODE tools/train_net.py ${FP16_ARG} \
   ${EXTRA_PARAMS} \
   --config-file $CONFIG_YAML \
   "${EXTRA_CONFIG[@]}" ; ret_code=$?
